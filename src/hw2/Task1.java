@@ -1,8 +1,10 @@
 package hw2;
 
+// Дан номер месяца, например int month = 5. В зависимости от данного значения вывести в консоль время года
 public class Task1 {
 
     public static void main(String[] args) {
+
         int month = 11;
 
         if (month == 12 || month < 3) {
