@@ -1,5 +1,6 @@
 package hw5;
 
+import java.security.cert.TrustAnchor;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -17,15 +18,23 @@ public class Task3 {
         String word;
 
         int wordsCounter = 0;
+        boolean isRepeat;
 
         while (true) {
             word = sc.nextLine();
+            isRepeat = false;
 
             if ("exit".equals(word)) break;
 
-            if (Arrays.asList(resultArr).contains(word)) {
-                System.out.println("Данное слово уже содержится в массиве. Введите новое слово");
-            } else {
+            for (String element: resultArr) {
+                if (element == null) continue;
+                if (word.equals(element)){
+                    System.out.println("Данное слово уже содержится в массиве. Введите новое слово");
+                    isRepeat = true;
+                    break;
+                }
+            }
+            if (!isRepeat) {
                 resultArr[wordsCounter] = word;
                 wordsCounter++;
             }
