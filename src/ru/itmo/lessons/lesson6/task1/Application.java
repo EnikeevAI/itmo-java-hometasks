@@ -44,11 +44,11 @@ public class Application {
 
         groupElbrus.addAplinist(ivan);
         groupElbrus.addAplinist(petr);
-        groupElbrus.isOpen(); // набор открыт
+        groupElbrus.printGroupInformation(); // набор открыт
 
         groupKilimanjaro.addAplinist(alex);
         groupKilimanjaro.addAplinist(sergey);
-        groupKilimanjaro.isOpen(); // набор открыт
+        groupKilimanjaro.printGroupInformation(); // набор открыт
 
 
 
