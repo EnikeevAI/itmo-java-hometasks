@@ -77,6 +77,8 @@ public class Cat {
             for(Mouse mouse: anotherCatMouses) {
                 if (mouse != null) catchingMouse(mouse);
             }
+        } else if(cat.getWeight() > weight) {
+            cat.attackAnotherCat(this);
         }
     }
 

@@ -27,7 +27,7 @@ public class Application {
         tom.printMouses();
         barsik.printMouses();
 
-        barsik.attackAnotherCat(tom);
+        tom.attackAnotherCat(barsik);
         tom.printMouses();
         barsik.printMouses();
     }
