@@ -28,7 +28,7 @@ public class Application {
             Student student = new Student(
                     String.format("Ученик %d",i+1),
                     (int) (7 + (Math.random() * 9)),
-                    Application.classes[(int) (Math.random() * 3)]
+                    Application.classes[(int) (Math.random() * 3)],
                     (int) (Math.random() * 40));
             school.addStudent(student);
         }
