@@ -10,7 +10,7 @@ public enum Planet {
     private final String name;
 
     Planet(String name, int radius, double weight) {
-        if(name.length() < 3) throw new IllegalArgumentException("Название планыт д.б. минимум из 3 символов");
+        if(name.length() < 3 || name == null) throw new IllegalArgumentException("Название планыт д.б. минимум из 3 символов");
         this.name = name;
         setRadius(radius);
         setWeight(weight);
