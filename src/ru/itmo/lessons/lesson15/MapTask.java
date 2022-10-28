@@ -44,7 +44,7 @@ public class MapTask {
         String[] textByWords = text.split(" ");
 
         for (String textByWord : textByWords) {
-            if (textByWord.toLowerCase().equals(word.toLowerCase())) {
+            if (textByWord.equalsIgnoreCase(word)) {
                 wordStatistic.put(word, wordStatistic.get(word) + 1);
             }
         }
@@ -67,6 +67,36 @@ public class MapTask {
             }
         }
         return textStatistic;
+    }
+
+    public static void printTopTenWordsFromText(String text) {
+        HashMap<String, Integer> words = new HashMap<>();
+
+        for (String word: text.split(" ")) {
+            if (words.get(word) != null) {
+                words.put(word, words.get(word) + 1);
+            } else {
+                words.put(word, 1);
+            }
+        }
+
+        ArrayList<Integer> wordsNumbersList = new ArrayList<>(words.values());
+        wordsNumbersList.sort(Comparator.reverseOrder());
+        HashMap<String, Integer> topTenWords = new HashMap<>();
+        for (int i = 0, wordCounter = 0; i < 10; i++) {
+            for (Map.Entry<String, Integer> pair : words.entrySet()) {
+                if(pair.getValue().equals(wordsNumbersList.get(i))) {
+                    if (topTenWords.get(pair.getKey()) == null) {
+                        topTenWords.put(pair.getKey(), pair.getValue());
+                        System.out.println("Слово: " + pair.getKey() + ", количество повторений: " + pair.getValue());
+                        wordCounter++;
+                    }
+                }
+                if (wordCounter == 10) break;
+            }
+        }
+
+
     }
 
     public static void main(String[] args) {
@@ -134,6 +164,7 @@ public class MapTask {
 
         System.out.println(getWordStatistic(text, "It")); // 3
         System.out.println(getTextStatistic(text));
+        printTopTenWordsFromText(text);
 
     }
 }
