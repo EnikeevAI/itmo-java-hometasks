@@ -1,5 +1,7 @@
 package ru.itmo.lessons.lesson17.transactions;
 
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TransactionsTask {
@@ -27,6 +29,19 @@ public class TransactionsTask {
         //      Long - сумма транзакций (sum) по данному аккаунту
         //  2. найти сумму транзакций по всем аккаунтам
 
+        // 1.
+        Map<String, Long> map01 = transactionStream
+                .collect(Collectors.groupingBy(
+                        transaction -> transaction.getAccount().getNumber(),
+                        Collectors.summingLong(transaction -> transaction.getSum())
+                ));
+        System.out.println(map01);
+
+        Stream<Transaction> transactionStream01 = Stream.of(transaction1, transaction2, transaction3,
+                transaction4, transaction5, transaction6, transaction7);
+
+        Long transactionsSum = transactionStream01.mapToLong(transaction -> transaction.getSum()).sum();
+        System.out.println(transactionsSum);
 
     }
 }
