@@ -5,7 +5,6 @@ import ru.itmo.lessons.lesson14.employee.comparators.NameComparator;
 import ru.itmo.lessons.lesson14.employee.comparators.SalaryComparator;
 import ru.itmo.lessons.lesson14.employee.comparators.AgeComparator;
 
-import javax.naming.ldap.PagedResultsControl;
 import java.util.Comparator;
 import java.util.List;
 

@@ -4,10 +4,10 @@ import java.util.*;
 
 public class MapTask {
 
-    public static ArrayList<String> getCitiesLoginByValue(HashMap<String, String> citiesMap, String city) {
-        ArrayList<String> citiesLogin = new ArrayList<>();
+    public static List<String> getCitiesLoginByValue(HashMap<String, String> citiesMap, String city) {
+        List<String> citiesLogin = new ArrayList<>();
         for(Map.Entry<String, String> pair: citiesMap.entrySet()) {
-            if (city.equals(pair.getValue())) {
+            if (city.equalsIgnoreCase(pair.getValue())) {
                 citiesLogin.add(pair.getKey());
             }
         }
@@ -38,65 +38,39 @@ public class MapTask {
         return customers;
     }
 
-    public static HashMap<String, Long> getWordStatistic(String text, String word) {
-        HashMap<String, Long> wordStatistic = new HashMap<>();
-        wordStatistic.put(word, 0L);
+    public static int getWordCount(String text, String word) {
+        int count = 0;
         String[] textByWords = text.split(" ");
 
         for (String textByWord : textByWords) {
-            if (textByWord.equalsIgnoreCase(word)) {
-                wordStatistic.put(word, wordStatistic.get(word) + 1);
-            }
+            if (textByWord.equalsIgnoreCase(word)) count++;
         }
-        return wordStatistic;
+        return count;
     }
 
     public static HashMap<Integer, ArrayList<String>> getTextStatistic(String text) {
         HashMap<Integer, ArrayList<String>> textStatistic = new HashMap<>();
-        int wordLength = 0;
         for (String word : text.split(" ")) {
-            wordLength = word.length();
-            if(textStatistic.containsKey(wordLength)) {
-                ArrayList<String> wordsList = textStatistic.get(wordLength);
-                wordsList.add(word);
-                textStatistic.put(wordLength, wordsList);
-            } else {
-                ArrayList<String> wordsList = new ArrayList<>();
-                wordsList.add(word);
-                textStatistic.put(wordLength, wordsList);
-            }
+            ArrayList<String> strings = textStatistic.getOrDefault(word.length(), new ArrayList<String>());
+            strings.add(word);
+            textStatistic.put(word.length(), strings);
         }
         return textStatistic;
     }
 
     public static void printTopTenWordsFromText(String text) {
-        HashMap<String, Integer> words = new HashMap<>();
+        String[] words = text.trim().toLowerCase().split(" ");
+        HashMap<String, Integer> hashMap = new HashMap<>();
 
-        for (String word: text.split(" ")) {
-            if (words.get(word) != null) {
-                words.put(word, words.get(word) + 1);
-            } else {
-                words.put(word, 1);
-            }
+        for (String word: words) {
+            hashMap.put(word, hashMap.getOrDefault(word, 0) + 1);
         }
 
-        ArrayList<Integer> wordsNumbersList = new ArrayList<>(words.values());
-        wordsNumbersList.sort(Comparator.reverseOrder());
-        HashMap<String, Integer> topTenWords = new HashMap<>();
-        for (int i = 0, wordCounter = 0; i < 10; i++) {
-            for (Map.Entry<String, Integer> pair : words.entrySet()) {
-                if(pair.getValue().equals(wordsNumbersList.get(i))) {
-                    if (topTenWords.get(pair.getKey()) == null) {
-                        topTenWords.put(pair.getKey(), pair.getValue());
-                        System.out.println("Слово: " + pair.getKey() + ", количество повторений: " + pair.getValue());
-                        wordCounter++;
-                    }
-                }
-                if (wordCounter == 10) break;
-            }
+        ArrayList<Map.Entry<String, Integer>> entries = new ArrayList<>(hashMap.entrySet());
+        entries.sort(new ValueComparator());
+        for (int i = 0; i < 10; i++) {
+            System.out.println(entries.get(i).getKey());
         }
-
-
     }
 
     public static void main(String[] args) {
@@ -162,7 +136,7 @@ public class MapTask {
                 "uncover many web sites still uncover in their infancy Various versions uncover have evolved over the years uncover sometimes by accident" +
                 " sometimes on purpose injected humour and the like";
 
-        System.out.println(getWordStatistic(text, "It")); // 3
+        System.out.println(getWordCount(text, "It")); // 3
         System.out.println(getTextStatistic(text));
         printTopTenWordsFromText(text);
 

@@ -3,6 +3,7 @@ package ru.itmo.lessons.lesson17.student;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StudentTask {
@@ -47,25 +48,42 @@ public class StudentTask {
                         student -> Period.between(student.getBirth(),LocalDate.now()).getYears()));
         System.out.println(averageAge);
 
+        double avgAge = students.stream()
+                .mapToInt(pupil -> LocalDate.now().getYear() - pupil.getBirth().getYear())
+                .average().orElse(0);
+        System.out.println(avgAge);
+
+
         // 3. Найти самого младшего ученика
         Student youngestStudent = students.stream()
                 .min((s1, s2) ->  Period.between(s1.getBirth(),LocalDate.now()).getYears() - Period.between(s2.getBirth(),LocalDate.now()).getYears()).get();
         System.out.println(youngestStudent);
+
+        Student minAge = students.stream().max(Comparator.comparing(Student::getBirth)).orElse(null);
+        System.out.println(minAge);
 
         // 4. Найти самого старшего ученика
         Student oldestStudent = students.stream()
                 .max((s1, s2) ->  Period.between(s1.getBirth(),LocalDate.now()).getYears() - Period.between(s2.getBirth(),LocalDate.now()).getYears()).get();
         System.out.println(oldestStudent);
 
+        Student maxAge = students.stream().min(Comparator.comparing(Student::getBirth)).orElse(null);
+        System.out.println(maxAge);
+
         // 5. Собрать учеников в группы по году рождения
-        Map<Integer, ArrayList<Student>> studentsByYears = students.stream()
+        Map<Integer, List<Student>> studentsByYears = students.stream()
                 .collect(Collectors.groupingBy(
-                        student -> student.getBirth().getYear(),
-                        Collectors.toCollection(ArrayList::new)));
+                        student -> student.getBirth().getYear()));
         System.out.println(studentsByYears);
 
         // 6. Убрать учеников с одинаковыми именами, имена и дату рождения оставшихся вывести в консоль
-        // students.stream().distinct().forEach(student -> System.out.println(student));
+        Collection<Student> uniqueByName = students.stream()
+                .collect(Collectors.toMap(
+                        Student::getName,   // student -> student->getName();
+                        Function.identity(),// student -> student
+                        ((pupil, pupil2) -> pupil)
+                        )).values();
+        uniqueByName.forEach(pupil -> System.out.println(pupil.getName() + ": " + pupil.getBirth()));
 
         // 7. Отсортировать по полу, потом по дате рождения, потом по имени (в обратном порядке), собрать в список (List)
         Comparator<Student> comparingByBirthdate = (s1, s2) -> Period.between(s1.getBirth(),LocalDate.now()).getYears() - Period.between(s2.getBirth(),LocalDate.now()).getYears();
@@ -75,12 +93,19 @@ public class StudentTask {
                 .toList();
         System.out.println(sortedStudentsList);
 
+        students.sort(
+                Comparator.comparing(Student::getGender)
+                        .thenComparing(Student::getBirth)
+                        .thenComparing(Student::getName).reversed()
+        );
+        System.out.println(students);
+
         // 8. Вывести в консоль всех учеников в возрасте от N до M лет
         int N = 7, M = 10;
         System.out.println("Список студентов в возрасте от " + N + " до " + M + " лет включительно");
         students.stream().filter(
-                student -> Period.between(student.getBirth(),LocalDate.now()).getYears() >= N &&
-                        Period.between(student.getBirth(),LocalDate.now()).getYears() <= M)
+                student -> Period.between(student.getBirth(),LocalDate.now()).getYears() > N &&
+                        Period.between(student.getBirth(),LocalDate.now()).getYears() < M)
                 .forEach(student -> System.out.println(student));
 
         // 9. Собрать в список всех учеников с именем=someName

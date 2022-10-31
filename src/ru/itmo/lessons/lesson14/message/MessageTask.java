@@ -42,16 +42,13 @@ public class MessageTask {
     public static void uniqueMessageCount(List<Message> messageList) {
         System.out.println();
         System.out.println("===========Количество уникальных сообщений===========");
-        HashSet<Message> messageSet = new HashSet<>(messageList);
-        System.out.println(messageSet.size());
+        System.out.println(new HashSet<>(messageList).size());
     }
 
     public static List<Message> uniqueMessagesInOriginalOrder(List<Message> messageList) {
         System.out.println();
         System.out.println("=Неповторяющиеся сообщения в порядке, в котором они встретились в первоначальном списке=");
-        LinkedHashSet<Message> linkedHashSet = new LinkedHashSet<>(messageList);
-        LinkedList<Message> linkedList = new LinkedList<>(linkedHashSet);
-        return linkedList;
+        return new ArrayList<>(new LinkedHashSet<>(messageList));
     }
 
     public static void removeEach(List<Message> messageList, MessagePriority priority) {
