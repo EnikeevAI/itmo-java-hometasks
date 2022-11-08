@@ -1,6 +1,8 @@
 package ru.itmo.lessons.lesson20.base;
 
-abstract public class Unit {
+import java.io.Serializable;
+
+abstract public class Unit implements Serializable {
     // protected - доступ в дочернем классе или внутри пакета
     protected int healthScore;
     private final int maxHealthScore;

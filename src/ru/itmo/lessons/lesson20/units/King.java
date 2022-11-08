@@ -106,4 +106,16 @@ public class King extends Unit {
         unit.plusHealth(1);
         System.out.println("King и Unit восстанавливают силы");
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        King anotherKing;
+
+        if (obj instanceof King) anotherKing = (King) obj;
+        else return false;
+
+        return this.gold == anotherKing.getGold() &&
+                this.army.length == anotherKing.army.length &&
+                this.healthScore == anotherKing.getHealthScore();
+    }
 }
