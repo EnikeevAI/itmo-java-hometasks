@@ -34,11 +34,6 @@ public class TCPServerIO {
     }
 
     public static void main(String[] args) {
-        // Integer.parseInt(); -> возвращает int
-        // Integer.valueOf(); -> возвращает Integer
-        // что делать, если аргумент не задан или его нельзя преобразовать в int. Или выходит за диапазон портов
-        int port;
-        if (args.length < 1) throw new IllegalArgumentException("Количество аргументов меньше 1");
-        new TCPServerIO(Integer.parseInt(args[0])).run();
+        new TCPServerIO(8090).run();
     }
 }

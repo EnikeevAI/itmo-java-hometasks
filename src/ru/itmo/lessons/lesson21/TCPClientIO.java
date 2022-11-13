@@ -47,7 +47,6 @@ public class TCPClientIO {
     }
 
     public static void main(String[] args) {
-        // FIXME:: Задание 1 - ip и port из properties файла
-        new TCPClientIO("127.0.0.1", 8090).run();
+        new TCPClientIO(TCPPropertiesIO.getClientIP(), TCPPropertiesIO.getClientPort()).run();
     }
 }
