@@ -5,11 +5,14 @@ import ru.itmo.lessons.lesson21.common.Message;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class TCPClientIO {
     private final String ip;  // адрес серверной машины
     private final int port;   // порт, на котором серверная программа ожидает клиента
+
+    private LocalDateTime receiptMessageTime;
 
     public TCPClientIO(String ip, int port) {
         this.ip = ip;
@@ -23,7 +26,6 @@ public class TCPClientIO {
         String name = scanner.nextLine();
 
         while (true) {
-            // FIXME:: Задание - выход по команде exit
             System.out.println("Введите сообщение");
             String text = scanner.nextLine();
 
@@ -38,12 +40,21 @@ public class TCPClientIO {
                 connection.sendMessage(message);
                 Message fromServer = connection.readMessage();
                 System.out.println("Сообщение от сервера: " + fromServer);
+                receiptMessageTime = LocalDateTime.now();
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Обработка IOException | ClassNotFoundException");
             } catch (Exception e) {
                 System.out.println("Обработка Exception");
             }
+
+            if ("/ping".equalsIgnoreCase(text)) {
+                System.out.println("Время обмена сообщениями с сервером: " + getPingTime(message) + " мс");
+            }
         }
+    }
+
+    private int getPingTime(Message message) {
+        return (receiptMessageTime.getNano() - message.getDateTime().getNano()) / 1_000_000;
     }
 
     public static void main(String[] args) {

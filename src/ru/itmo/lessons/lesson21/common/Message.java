@@ -33,6 +33,8 @@ public class Message implements Serializable {
         dateTime = LocalDateTime.now();
     }
 
+    public LocalDateTime getDateTime() {return dateTime;}
+
 
     @Override
     public String toString() {
