@@ -10,6 +10,10 @@ import java.net.Socket;
 public class TCPServerIO {
     private int port;
 
+    private final String sender = "Server";
+
+    private String messageText;
+
     public TCPServerIO(int port) {
         this.port = port;
     }
@@ -25,12 +29,28 @@ public class TCPServerIO {
                 Message fromClient = connection.readMessage();
                 System.out.println("От клиента: " + fromClient);
 
-                Message message = new Message("Server", "Сообщение от сервера");
+                if ("/help".equalsIgnoreCase(fromClient.getText())) {
+                    messageText = getHelpText();
+                } else {
+                    messageText = "Сообщение от сервера";
+                }
+
+                Message message = new Message(sender, messageText);
                 connection.sendMessage(message);
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Обработка IOException или ClassNotFoundException");
         }
+    }
+
+    private static String getHelpText() {
+        String text = "\n" +
+                "Команда    /help    - отобразить справку по командам" + "\n" +
+                "Команда    /count   - отобразить количество сообщений, обработанное сервером" + "\n" +
+                "Команда    /ping    - отобразить время, за которое сообщение доходит до сервера и возвращается обратно"
+                + "\n" +
+                "Команда    /exit    - закрыть клиентское приложение";
+        return text;
     }
 
     public static void main(String[] args) {
