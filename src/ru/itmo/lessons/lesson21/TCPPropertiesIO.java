@@ -6,12 +6,13 @@ import java.util.Arrays;
 import java.util.Properties;
 
 public class TCPPropertiesIO {
-    private static final String CLIENT_PROPERTIES_PATH;
+    private static final String CLIENT_PROPERTIES_PATH = "lesson21_client_config.properties";
+
+    private static final int PORT_BY_DEFAULT = 8090;
 
     private static Properties clientProperties;
 
     static {
-        CLIENT_PROPERTIES_PATH = "lesson21_client_config.properties";
         clientProperties = setClientProperties(CLIENT_PROPERTIES_PATH);
     }
 
@@ -37,18 +38,24 @@ public class TCPPropertiesIO {
     }
 
     public static int getClientPort() {
+        return getTCPPortFromString(clientProperties.getProperty("port"));
+    }
+
+    public static int getTCPPortFromString(String tcpPort) {
         int clientPort = 0;
         try {
-            clientPort = Integer.parseInt(clientProperties.getProperty("port"));
+            clientPort = Integer.parseInt(tcpPort);
         } catch (NumberFormatException e) {
             System.out.println("Неверный формат значения port в файле " + CLIENT_PROPERTIES_PATH);
         }
+        return checkTCPPort(clientPort);
+    }
 
-        if (clientPort == 0 || clientPort < 1024 || clientPort > 49151) {
-            System.out.println("Ошибочное значение клиентского порта в файле " + CLIENT_PROPERTIES_PATH +
-                    ". Задано значение по умолчанию = 8090");
-            clientPort = 8090;
+    private static int checkTCPPort(int port) {
+        if (port == 0 || port < 1024 || port > 49151) {
+            System.out.println("Ошибочное значение порта. Задано значение по умолчанию = 8090");
+            return PORT_BY_DEFAULT;
         }
-        return clientPort;
+        return port;
     }
 }

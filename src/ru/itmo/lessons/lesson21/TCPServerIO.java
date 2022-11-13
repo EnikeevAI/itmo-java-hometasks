@@ -34,6 +34,6 @@ public class TCPServerIO {
     }
 
     public static void main(String[] args) {
-        new TCPServerIO(8090).run();
+        new TCPServerIO(TCPPropertiesIO.getTCPPortFromString(args[0])).run();
     }
 }
