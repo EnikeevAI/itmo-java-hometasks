@@ -14,14 +14,11 @@ public class TCPServerIO {
 
     private String messageText;
 
-    private static int messageCounter;
-
-    static {
-        messageCounter = 0;
-    }
+    private int messageCounter;
 
     public TCPServerIO(int port) {
         this.port = port;
+        this.messageCounter = 0;
     }
 
     public void run() {
@@ -53,7 +50,7 @@ public class TCPServerIO {
         }
     }
 
-    private static String getHelpText() {
+    private String getHelpText() {
         String text = "\n" +
                 "Команда    /help    - отобразить справку по командам" + "\n" +
                 "Команда    /count   - отобразить количество сообщений, обработанное сервером" + "\n" +
@@ -63,8 +60,8 @@ public class TCPServerIO {
         return text;
     }
 
-    private static String getCountText() {
-        return "Количество сообщений, обработанных сервером, равно " + messageCounter;
+    private String getCountText() {
+        return "Количество сообщений, обработанных сервером, равно " + this.messageCounter;
     }
 
     public static void main(String[] args) {
