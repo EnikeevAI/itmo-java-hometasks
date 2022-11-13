@@ -14,6 +14,12 @@ public class TCPServerIO {
 
     private String messageText;
 
+    private static int messageCounter;
+
+    static {
+        messageCounter = 0;
+    }
+
     public TCPServerIO(int port) {
         this.port = port;
     }
@@ -29,8 +35,12 @@ public class TCPServerIO {
                 Message fromClient = connection.readMessage();
                 System.out.println("От клиента: " + fromClient);
 
+                messageCounter++;
+
                 if ("/help".equalsIgnoreCase(fromClient.getText())) {
                     messageText = getHelpText();
+                } else if ("/count".equalsIgnoreCase(fromClient.getText())) {
+                    messageText = getCountText();
                 } else {
                     messageText = "Сообщение от сервера";
                 }
@@ -51,6 +61,10 @@ public class TCPServerIO {
                 + "\n" +
                 "Команда    /exit    - закрыть клиентское приложение";
         return text;
+    }
+
+    private static String getCountText() {
+        return "Количество сообщений, обработанных сервером, равно " + messageCounter;
     }
 
     public static void main(String[] args) {
